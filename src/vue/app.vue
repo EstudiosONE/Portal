@@ -30,5 +30,8 @@ export default {
 
             // Configuracion de grilla
         }
+
+        // Fuentes
+        font-family: 'product_sansregular';
     }
 </style>

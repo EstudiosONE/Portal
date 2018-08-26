@@ -1,5 +1,5 @@
 <template lang="pug">
-    .control-panel-dashboard
+    div
         router-view.content
 </template>
 

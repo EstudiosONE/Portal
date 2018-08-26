@@ -6,26 +6,10 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot --port 80 --host 192.168.2.52",
-    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
+    "dev": "cross-env NODE_ENV=development webpack-dev-server --hot --port 8080 --host 192.168.0.103",
+    "build": "cross-env NODE_ENV=production webpack --hot --progress --hide-modules"
   },
   "dependencies": {
-    "@material/button": "^0.37.1",
-    "@material/card": "^0.38.1",
-    "@material/drawer": "^0.38.0",
-    "@material/elevation": "^0.38.0",
-    "@material/form-field": "^0.38.1",
-    "@material/icon-button": "^0.38.1",
-    "@material/layout-grid": "^0.34.0",
-    "@material/linear-progress": "^0.38.0",
-    "@material/list": "^0.38.1",
-    "@material/ripple": "^0.37.1",
-    "@material/rtl": "^0.36.0",
-    "@material/snackbar": "^0.37.1",
-    "@material/tab-bar": "^0.38.1",
-    "@material/textfield": "^0.38.1",
-    "@material/top-app-bar": "^0.38.1",
-    "@material/typography": "^0.38.0",
     "axios": "^0.18.0",
     "jsrsasign": "^8.0.12",
     "jssha": "^2.3.1",

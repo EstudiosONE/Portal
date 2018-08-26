@@ -30,7 +30,7 @@ export default {
                     }
                 },
                 usersAndGroups: {
-                    title: 'USUARIOS Y GRUPOS',
+                    title: 'Usuarios y Grupos',
                     content: {
                         table: {
                             columnHeaders: {
