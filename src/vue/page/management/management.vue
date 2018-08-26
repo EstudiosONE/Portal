@@ -4,15 +4,15 @@
             md-app-toolbar.md-large.md-dense.md-primary
                 .md-toolbar-row
                     .md-toolbar-section-start
-                        md-button.md-icon-button(@click="toggleMenu" v-if="!menuVisible")
+                        md-button.md-icon-button(@click="toggleMenu")
                             md-icon menu
                         span.md-title iGS Suite | El Descubrimiento RESORT CLUB
                     .md-toolbar-section-end
                         md-button.md-icon-button
                             .md-icon more_vert
                 .md-toolbar-row
-                    md-tabs.md-primary
-                        md-tab(v-for="(item, index) in items" :md-label="item.label" :key="index")
+                    md-tabs.md-primary(md-sync-route=true)
+                        md-tab(v-for="(value, index) in this.$store.state.management.ui.ui.menu.toolbar" :md-label="value.label" :to="value.to" :key="index")
             md-app-drawer(:md-active.sync="menuVisible")
                 md-toolbar.md-transparent(md-elevation="0")
                     span Navigation

@@ -1,35 +1,33 @@
 <template lang="pug">
-    .control-panel__users-and-groups
-        .o-title
-            .o-title-label
-                | {{ this.$store.getters['management/ui/lang'].controlPanel.usersAndGroups.title }}
-            .o-title-actions
-        .o-content
-            .o-table
-                .o-table-title
-                    span
-                    span {{ this.$store.getters['management/ui/lang'].controlPanel.usersAndGroups.content.table.columnHeaders.name }}
-                    span {{ this.$store.getters['management/ui/lang'].controlPanel.usersAndGroups.content.table.columnHeaders.type }}
-                    span 
-                .o-table-content
-                    md-progress-bar.o-table-loadding(v-if="loadding", md-mode="indeterminate")
-                    .o-table-content-row(v-if='usersAndGroups', v-for="u in usersAndGroups")
-                        md-icon.md-primary {{ u.icon }}
-                        span {{ u.name }}
-                        span {{ u.type }}
-                        .o-actions
-                            md-button.md-icon-button.md-primary(v-on:click="viewRecord(u.name)")
-                                md-icon search
-                            md-menu
-                                md-button.md-icon-button.md-primary(md-menu-trigger)
-                                    md-icon more_vert
-                                md-menu-content
-                                    md-menu-item(v-on:click="editRecord(u.name)")
-                                        md-icon edit
-                                        span {{ u.actions.edit }}
-                                    md-menu-item(v-on:click="deleteRecord(u.name)")
-                                        md-icon delete
-                                        span {{ u.actions.delete }}
+div
+    md-toolbar.md-transparent(md-elevation="0")
+        md-button.md-icon-button.md-raised
+            .md-icon add
+        h3.md-title {{ this.$store.getters['management/ui/lang'].controlPanel.usersAndGroups.title }}
+    md-table(v-if="usersAndGroups")
+        md-table-row
+            md-table-head(style="width: 48px;")
+            md-table-head {{ ui.content.table.columnHeaders.name }}
+            md-table-head {{ ui.content.table.columnHeaders.type }}
+            md-table-head 
+        md-table-row(v-for="(item, index) in usersAndGroups" :key="index")
+            md-table-cell 
+                .md-icon {{ item.icon }}
+            md-table-cell {{ item.name }}
+            md-table-cell {{ item.type }}
+            md-table-cell 
+                md-button.md-icon-button(v-on:click="viewRecord(item.name)")
+                    .md-icon search
+                md-menu
+                    md-button.md-icon-button(md-menu-trigger)
+                        .md-icon more_vert
+                        md-menu-content
+                            md-menu-item(v-on:click="editRecord(item.name)")
+                                .md-icon edit
+                                span {{ item.actions.edit}}
+                            md-menu-item(v-on:click="deleteRecord(item.name)")
+                                .md-icon delete
+                                span {{ item.actions.delete}}
         md-dialog(:md-active.sync="showDeleteDialog")
             md-dialog-title Desea eliminar a {{ this.$store.state.test }}
             md-dialog-content
@@ -39,9 +37,35 @@
             md-dialog-actions
                 md-button(v-on:click="onDeleteCancel") Cancelar
                 md-button(v-on:click="onDeleteConfirm") Confirmar
-
-
-
+        md-dialog(:md-active.sync="showItemDetail")
+            md-dialog-title Editar usuario
+            md-dialog-content
+                .md-layout.md-gutter
+                    .md-layout-item.md-large-size-50
+                    .md-layout-item.md-large-size-50
+                        md-field
+                            md-icon portrait
+                            label Usuario
+                            md-input
+                    .md-layout-item.md-large-size-50
+                        md-field
+                            md-icon person_outline
+                            label Nombre
+                            md-input
+                    .md-layout-item.md-large-size-50
+                        md-field
+                            label Apellido
+                            md-input
+                    .md-layout-item.md-large-size-100
+                        md-field
+                            label Grupo de usuarios
+                            md-select(v-model="data" multiple=true)
+                                md-option(value="Administradores") Administradores
+                                md-option(value="Usuarios") Usuarios
+                
+            md-dialog-actions
+                md-button(v-on:click="showItemDetail = false") Cancelar
+                md-button(v-on:click="showItemDetail = false") Confirmar
 </template>
 <script>
 export default {
@@ -51,15 +75,18 @@ export default {
         },
         loadding: function() {
             return this.$store.getters['management/controlPanel/usersAndGroups/loadding']
+        },
+        ui: function(){
+            return this.$store.getters['management/ui/lang'].controlPanel.usersAndGroups
         }
-
     },
     methods: {
         viewRecord: function(id) {
             this.$router.push("users-and-groups/" + id + '/view')
         },
         editRecord: function(id) {
-            this.$router.push("users-and-groups/" + id + '/edit')
+            this.showItemDetail = true
+            // this.$router.push("users-and-groups/" + id + '/edit')
         },
         deleteRecord: function(id) {
             this.idToDelete = id
@@ -78,6 +105,15 @@ export default {
         active: true,
         showDeleteDialog: false,
         idToDelete: null,
+        showItemDetail: false,
+        itemDetailActionName: "",
+        user: {
+            username: "",
+            name: "Administrador",
+            surname: "",
+            type: "group"
+        },
+        data:[]
     }),
     mounted() {
         this.$store.dispatch('management/controlPanel/usersAndGroups/getRecords')
@@ -85,54 +121,4 @@ export default {
 }
 </script>
 <style lang="scss">
-@import 'src/styles/colors';
-.control-panel__users-and-groups{
-    margin: auto 12px;
-    .o-title{
-        margin: 24px auto;
-        display: grid;
-        grid-template-areas: "title actions";
-        .o-title-label{
-            grid-area: title;
-            font-size: 24px;
-            font-weight: normal;
-            color: $clr-blue-grey-800;
-        }
-        .o-title-actions{
-            grid-area: actions;
-        }
-    }
-    .o-content{
-        .o-table-row{
-            display: grid;
-            grid-template-columns: 1fr 4fr 2fr 3fr;
-            grid-template-rows: auto;
-        }
-        .o-table{
-            display: grid;
-            grid-template-areas:
-            "title"
-            "content"; 
-            .o-table-title{
-                grid-area: title;
-                @extend .o-table-row;
-                height: 48px;
-                align-items: center;
-                border-bottom: 1px solid $clr-blue;
-            }
-            .o-table-content{
-                grid-area: content;
-                .o-table-content-row{
-                    height: 48px;
-                    @extend .o-table-row;
-                    align-items: center;
-                    border-bottom: 1px solid $clr-grey-300;
-                    background-color: $clr-white;
-                    transition: box-shadow .125s; 
-                    position: relative;
-                }
-            }
-        }
-    }
-}
 </style>

@@ -1,11 +1,33 @@
 export default {
     namespaced: true,
     state: {
+        ui:{
+            menu: {
+                drawer: {
+
+                },
+                toolbar: {
+                    dashboard: {
+                        label: "Dashboard",
+                        to: "/management/dashboard"
+                    }
+                }
+            }
+        },
         es: {
+            dashboard: {
+                menu: {
+                    toolbar: {
+                        dashboard: 'Dashboard'
+                    }
+                }
+            },
             controlPanel: {
                 menu: {
-                    dashboard: 'Dashboard',
-                    usersAndGroups: 'Usuarios y Grupos'
+                    toolbar: {
+                        dashboard: 'Dashboard',
+                        usersAndGroups: 'Usuarios y Grupos'
+                    }
                 },
                 usersAndGroups: {
                     title: 'USUARIOS Y GRUPOS',
@@ -61,6 +83,11 @@ export default {
                 case 'es': return state.es
                 case 'en': return state.en
             }
+        }
+    },
+    mutations: {
+        setToolBar: function(state, toolbar){
+            state.ui.menu.toolbar = toolbar
         }
     },
     actions: {
